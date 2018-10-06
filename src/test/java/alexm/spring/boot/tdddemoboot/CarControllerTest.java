@@ -3,6 +3,7 @@ package alexm.spring.boot.tdddemoboot;
 import alexm.spring.boot.tdddemoboot.domain.Car;
 import alexm.spring.boot.tdddemoboot.service.CarService;
 import alexm.spring.boot.tdddemoboot.web.CarController;
+import alexm.spring.boot.tdddemoboot.web.CarNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,13 @@ public class CarControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("prius"))
                 .andExpect(jsonPath("type").value("hybrid"));
+    }
+
+    @Test
+    public void testName() throws Exception {
+        given(carService.getCarDetails(anyString())).willThrow(new CarNotFoundException());
+        mockMvc.perform(MockMvcRequestBuilders.get("/cars/prius"))
+                .andExpect(status().isNotFound());
     }
 
 
