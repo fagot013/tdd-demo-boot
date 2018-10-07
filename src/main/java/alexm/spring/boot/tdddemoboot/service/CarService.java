@@ -3,6 +3,7 @@ package alexm.spring.boot.tdddemoboot.service;
 import alexm.spring.boot.tdddemoboot.domain.Car;
 import alexm.spring.boot.tdddemoboot.domain.CarRepository;
 import alexm.spring.boot.tdddemoboot.web.CarNotFoundException;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +18,7 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
+    @Cacheable("cars")
     public Car getCarDetails(String name) {
         Car car = carRepository.findByName(name);
         if (car == null) {
